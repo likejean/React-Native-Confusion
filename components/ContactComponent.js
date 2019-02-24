@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { Text, ScrollView, StyleSheet } from 'react-native';
-import { Card } from 'react-native-elements';
-
+import { Card, Icon, View} from 'react-native-elements';
 
 function ContactInfo() {
     return(        
         <Card title="Contact Information">
             <Text style={styles.baseText}>
-                121, Clear Water Bay Road{'\n'}            </Text>
+                121, Clear Water Bay Road{'\n'}            
+            </Text>
             <Text style={styles.baseText}>
                 Clear Water Bay, Kowloon{'\n'}
             </Text>
             <Text style={styles.baseText}>
                 HONG KONG{'\n'}
-            </Text>
+            </Text> 
             <Text>
                 Tel: +852 1234 5678{'\n'}
             </Text>
@@ -45,7 +45,25 @@ class Contact extends Component {
 const styles = StyleSheet.create({
     baseText: {
         fontFamily: 'Baskerville-SemiBoldItalic',
+    },
+
+    storyCounters: {
+        width: 25,
+    },
+    
+    iconCounter: {
+        fontSize: 21,
+        color: '#bbbbbb',
+        textAlign: 'center',
+    },
+    
+    iconCounterText: {
+        color: '#bbbbbb',
+        fontSize: 12,
+        textAlign: 'center'
     }
 });
+
+
 
 export default Contact;

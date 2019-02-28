@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, ScrollView, StyleSheet } from 'react-native';
-import { Card, Icon, View} from 'react-native-elements';
+import { Card } from 'react-native-elements';
 
 function ContactInfo() {
     return(        

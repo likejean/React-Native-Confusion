@@ -1,6 +1,11 @@
 import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../shared/baseUrl';
 
+
+//LOAD INITIAL COMMENTS
+
+
+
 export const fetchComments = () => (dispatch) => {
     return fetch(baseUrl + 'comments')
     .then(response => {
@@ -30,6 +35,14 @@ export const addComments = (comments) => ({
     type: ActionTypes.ADD_COMMENTS,
     payload: comments
 });
+
+
+
+
+//ADD DISHES
+
+
+
 
 export const fetchDishes = () => (dispatch) => {
 
@@ -68,6 +81,15 @@ export const addDishes = (dishes) => ({
     payload: dishes
 });
 
+
+
+
+//ADD PROMOTIONS
+
+
+
+
+
 export const fetchPromos = () => (dispatch) => {
     
     dispatch(promosLoading());
@@ -104,6 +126,11 @@ export const addPromos = (promos) => ({
     type: ActionTypes.ADD_PROMOS,
     payload: promos
 });
+
+
+//ADD LEADERS 
+
+
 
 export const fetchLeaders = () => (dispatch) => {
     
@@ -153,3 +180,50 @@ export const addFavorite = (dishId) => ({
     type: ActionTypes.ADD_FAVORITE,
     payload: dishId
 });
+
+
+
+//POST COMMENT
+
+export const addComment = (comment) => ({
+    type: ActionTypes.ADD_COMMENT,
+    payload: comment    
+});
+
+export const postComment = (dishId, rating, author, comment) => (dispatch) => {
+    const newComment = {
+        dishId: dishId,
+        rating: rating,
+        author: author,
+        comment: comment
+    };
+    newComment.date = new Date().toISOString();
+    console.log('NEW COMMENT', newComment)
+    return fetch(baseUrl + 'comments', {
+        method: "POST",
+        body: JSON.stringify(newComment),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "same-origin"
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+            throw error;
+    })
+    .then(response => response.json())
+    .then(response => setTimeout(() => {
+        dispatch(addComment(response));
+    },2000))
+    .catch(error =>  { console.log('post comments', error.message);
+        alert('Your comment could not be posted\nError: ' + error.message); 
+    });
+};

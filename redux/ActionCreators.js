@@ -198,6 +198,7 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
         comment: comment
     };
     newComment.date = new Date().toISOString();
+    //new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(item.date)))
     console.log('NEW COMMENT', newComment)
     return fetch(baseUrl + 'comments', {
         method: "POST",

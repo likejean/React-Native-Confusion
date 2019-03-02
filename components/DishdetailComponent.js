@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, Button, Modal } from 'react-native';
 import { Card, Icon, Input, Rating } from 'react-native-elements';
+import StarRating from 'react-native-star-rating';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import { postFavorite, postComment } from '../redux/ActionCreators';
@@ -64,9 +65,16 @@ function RenderComments(props) {
     const renderCommentItem = ({ item, index }) => {
         return(
             <View key={index} style={{margin: 10}}>
-                <Text style={{fontSize: 14}}>{item.comment}</Text>
-                <Text style={{fontSize: 12}}>{item.rating} Stars</Text>
-                <Text style={{fontSize: 12}}>{'-- ' + item.author + ', ' + item.date}</Text>
+                <Text style={{fontSize: 14}}>{item.comment}</Text>            
+                <StarRating
+                    starSize={20}
+                    disabled={false}
+                    maxStars={5} 
+                    fullStarColor={'gold'}  
+                    emptyStarColor={'gold'}                  
+                    rating={item.rating}              
+                />                
+                <Text style={{fontSize: 12}}>{'-- ' + item.author + ', ' + new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(item.date)))}</Text>
             </View>
         );
     }
@@ -157,15 +165,15 @@ class DishDetail extends Component {
                             size = {5} 
                             onFinishRating = {rating => this.setState({rating: rating})}                       
                         />
-                        <Input                            
+                        <Input                                                     
                             placeholder='Your Name'                            
-                            leftIcon={{ type: 'font-awesome', name: 'user' }}
+                            leftIcon={{ type: 'font-awesome', name: 'user', margin:5 }}
                             onChangeText = {author => this.setState({author: author})}
                         />
                         
                         <Input                            
                             placeholder='Leave Your Feedback'
-                            leftIcon={{ type: 'font-awesome', name: 'comment' }}
+                            leftIcon={{ type: 'font-awesome', name: 'comment',  margin:5 }}
                             onChangeText = {comment => this.setState({comment: comment})}
                         />
                         <TouchableOpacity

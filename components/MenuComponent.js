@@ -50,7 +50,7 @@ class Menu extends Component {
                     data={this.props.dishes.dishes}
                     renderItem={renderMenuItem}
                     keyExtractor={item => item.id.toString()}
-                    />
+                />
             );
         }
     }    

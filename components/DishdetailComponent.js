@@ -80,7 +80,7 @@ function RenderComments(props) {
     }
 
     return(
-        <Card titel='Comments'>
+        <Card title='Comments'>
             <FlatList
                 data={comments}
                 renderItem={renderCommentItem}

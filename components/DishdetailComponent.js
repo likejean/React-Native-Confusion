@@ -28,8 +28,7 @@ function RenderDish(props) {
     if (dish != null) {
         return(
             <Card
-                featuredTitle={dish.name}
-                
+                featuredTitle={dish.name}                
                 image={{uri: baseUrl + dish.image}}>
                 <Text style={{margin: 10}}>
                     {dish.description}

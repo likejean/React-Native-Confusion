@@ -18,8 +18,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
     postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)),
-    postFavorite: (dishId) => dispatch(postFavorite(dishId))
-    
+    postFavorite: (dishId) => dispatch(postFavorite(dishId))    
 });
 
 
@@ -30,6 +29,13 @@ function RenderDish(props) {
 
     const recognizeDrag = ({ moveX, moveY, dx, dy }) => {
         if ( dx < -200 )
+            return true;
+        else
+            return false;
+    }
+
+    const recognizeComment = ({ moveX, moveY, dx, dy }) => {
+        if ( dx > 200 )
             return true;
         else
             return false;
@@ -51,7 +57,8 @@ function RenderDish(props) {
                     [
                         {
                             text: 'Cancel', 
-                            onPress: () => console.log('Cancel Pressed'), style: 'cancel'
+                            onPress: () => console.log('Cancel Pressed'), 
+                            style: 'cancel'
                         },
                         {
                             text: 'OK', 
@@ -60,6 +67,7 @@ function RenderDish(props) {
                     ],
                     { cancelable: false }
                 );
+            if (recognizeComment(gestureState)) toggleModal();
             return true;
         }
     });
@@ -126,7 +134,11 @@ function RenderComments(props) {
     }
 
     return(
-        <Animatable.View animation="fadeInUp" duration={2000} delay={1000}>
+        <Animatable.View 
+            animation="fadeInUp" 
+            duration={2000} 
+            delay={1000}
+        >
             <Card title='Comments'>
                 <FlatList
                     data={comments}
@@ -193,7 +205,7 @@ class DishDetail extends Component {
 
     render(){
         const dishId = this.props.navigation.getParam('dishId',''); 
-        console.log(this.state)       
+           
         return(
             <ScrollView>
                 <RenderDish dish={this.props.dishes.dishes[+dishId]}

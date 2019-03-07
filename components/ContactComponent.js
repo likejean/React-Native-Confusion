@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, StyleSheet } from 'react-native';
+import { Text, ScrollView, Platform, StyleSheet } from 'react-native';
 import { Card } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
+
 
 function ContactInfo() {
     return( 
@@ -47,7 +48,15 @@ class Contact extends Component {
 
 const styles = StyleSheet.create({
     baseText: {
-        fontFamily: 'Baskerville-SemiBoldItalic',
+        flex: 1,
+        ...Platform.select({
+            ios: {
+                fontFamily: 'Baskerville-SemiBoldItalic'
+            },
+            android: {
+                fontFamily: "Roboto"
+            }
+        })      
     },
 
     storyCounters: {

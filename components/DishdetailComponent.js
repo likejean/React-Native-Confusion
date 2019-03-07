@@ -128,7 +128,7 @@ function RenderComments(props) {
                     emptyStarColor={'gold'}                  
                     rating={+item.rating}              
                 />                
-                <Text style={{fontSize: 12}}>{'-- ' + item.author + ', ' + new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(item.date)))}</Text>
+                <Text style={{fontSize: 12}}>{'-- ' + item.author + ', ' + item.date}</Text>
             </View>
         );
     }

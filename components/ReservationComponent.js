@@ -143,10 +143,10 @@ class Reservation extends Component {
                             onDateChange={(date) => {this.setState({ date: date})}}
                         />                   
                     </View>
-                    <View style={{flex: 1, backgroundColor: '#512DA8'}}> 
+                    <View> 
                         <Button
                             title='Reserve'
-                            color='white'
+                            color='#512DA8'
                             onPress={buttonClick}
                             accessibilityLabel='Learn more about this purple button'
                         />                                        

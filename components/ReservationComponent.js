@@ -80,15 +80,19 @@ class Reservation extends Component {
     async addReservationToCalendar(date) {
         console.log('DATE',date)
         await this.obtainCalendarPermission();
-        Calendar.createEventAsync({
-            calendarId: Calendar.DEFAULT,
-            details: {
+        Calendar.createEventAsync(Calendar.DEFAULT,
+            {
                 title: 'Con Fusion Table Reservation',
-                startDate: date,
-                endDate: date,
+                startDate: new Date(Date.parse(date)),
+                endDate: new Date(Date.parse(date)+2*60*60*1000)
+                ,
                 location: '121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong',
                 timeZone: 'Asia/Hong_Kong'
             }
+        ).then(event => {
+            console.log('success', event);
+        }).catch( error => {
+            console.log('failure', error);
         });
     }
 

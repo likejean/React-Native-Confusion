@@ -3,7 +3,7 @@ import Menu from './MenuComponent';
 import DishDetail from './DishdetailComponent';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
-import { View, Platform, Text, ScrollView, Image, StyleSheet, NetInfo, ToastAndroid } from 'react-native';
+import { View, Platform, Text, ScrollView, Image, StyleSheet, NetInfo, Alert } from 'react-native';
 import Home from './HomeComponent';
 import Reservation from './ReservationComponent';
 import Favorites from './FavoriteComponent';
@@ -13,6 +13,9 @@ import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
 
+if (Platform.OS === 'android') {
+    toast = require('ToastAndroid');
+}
 
 const mapStateToProps = state => {
     return {
@@ -302,40 +305,46 @@ class Main extends Component {
         this.props.fetchComments();
         this.props.fetchPromos();
         this.props.fetchLeaders();
-        if (Platform.OS !== 'ios'){
-            NetInfo.getConnectionInfo()
-                .then((connectionInfo) => {               
-                    ToastAndroid.show('Initial Network Connectivity Type: '
-                    + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType,
-                    ToastAndroid.LONG)
-                });
-        
-            NetInfo.addEventListener('connectionChange', this.handleConnectivityChange);
-        }        
+        NetInfo.getConnectionInfo()
+            .then((connectionInfo) => {
+            (Platform.OS === 'ios') ? 
+                // iOS
+            Alert.alert("Initial Network Connectivity Type:",
+            connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType)
+            : toast.show('Initial Network Connectivity Type: ' 
+                // Android
+            + connectionInfo.type + ', effectiveType: ' + connectionInfo.effectiveType, toast.LONG)
+        });      
     }
     
-    componentWillUnmount() {
-        if (Platform.OS !== 'ios'){
-            NetInfo.removeEventListener('connectionChange', this.handleConnectivityChange);
-        }        
+    componentWillUnmount() {        
+        NetInfo.removeEventListener('connectionChange', this.handleConnectivityChange);             
     }
 
     handleConnectivityChange = (connectionInfo) => {
-        switch (connectionInfo.type) {
+        switch (connectionInfo.type) {            
             case 'none':
-                ToastAndroid.show('You are now offline!', ToastAndroid.LONG);
-                break;
+                (Platform.OS === 'ios') ? Alert.alert("Offline", "You are now offline!")
+                : toast.show('You are now offline!', toast.LONG);
+            break;
+            
             case 'wifi':
-                ToastAndroid.show('You are now connected to WiFi!', ToastAndroid.LONG);
-                break;
+                (Platform.OS === 'ios') ? Alert.alert("WiFi", "You are now connected to WiFi!")
+                : toast.show('You are now connected to WiFi!', toast.LONG);
+            break;
+            
             case 'cellular':
-                ToastAndroid.show('You are now connected to Cellular!', ToastAndroid.LONG);
-                break;
+                (Platform.OS === 'ios') ? Alert.alert("Cellular", "You are now connected to Cellular!")
+                : toast.show('You are now connected to Cellular!', toast.LONG);
+            break;
+            
             case 'unknown':
-                ToastAndroid.show('You now have unknown connection!', ToastAndroid.LONG);
-                break;
+                (Platform.OS === 'ios') ? Alert.alert("Unknown", "You now have unknown connection!")
+                : toast.show('You now have unknown connection!', toast.LONG);
+            break;
+            
             default:
-                break;
+            break;
         }
     }
       

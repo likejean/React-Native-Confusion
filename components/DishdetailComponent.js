@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, Button, Alert, PanResponder, Modal, Share } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, Alert, PanResponder, Modal, Share } from 'react-native';
 import { Card, Icon, Input, Rating } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
 import { connect } from 'react-redux';

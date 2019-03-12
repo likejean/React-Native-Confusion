@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, ScrollView, Picker, Switch, Button, Modal, Alert } from 'react-native';
 import DatePicker from 'react-native-datepicker'
 import * as Animatable from 'react-native-animatable';
-import { Permissions, Notifications } from 'expo';
+import { Permissions, Notifications, Calendar } from 'expo';
 
 
 class Reservation extends Component {
@@ -26,6 +26,7 @@ class Reservation extends Component {
 
     handleReservation() {
         console.log(JSON.stringify(this.state));
+        this.addReservationToCalendar(this.state.date)
         this.toggleModal();
     }
 
@@ -49,6 +50,17 @@ class Reservation extends Component {
         return permission;
     }
 
+    async obtainCalendarPermission() {
+        let permission = await Permissions.getAsync(Permissions.CALENDAR);
+        if (permission.status !== 'granted') {
+            permission = await Permissions.askAsync(Permissions.CALENDAR);
+            if (permission.status !== 'granted') {
+                Alert.alert('Permission not granted to update this calendar');
+            }
+        }
+        return permission;
+    }
+
     async presentLocalNotification(date) {
         await this.obtainNotificationPermission();
         Notifications.presentLocalNotificationAsync({
@@ -61,6 +73,21 @@ class Reservation extends Component {
                 sound: true,
                 vibrate: true,
                 color: '#512DA8'
+            }
+        });
+    }
+
+    async addReservationToCalendar(date) {
+        console.log('DATE',date)
+        await this.obtainCalendarPermission();
+        Calendar.createEventAsync({
+            calendarId: Calendar.DEFAULT,
+            details: {
+                title: 'Con Fusion Table Reservation',
+                startDate: date,
+                endDate: date,
+                location: '121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong',
+                timeZone: 'Asia/Hong_Kong'
             }
         });
     }
@@ -79,6 +106,7 @@ class Reservation extends Component {
                         text: 'OK',
                         onPress: () => {
                             this.presentLocalNotification(this.state.date);
+                            this.handleReservation();
                             this.resetForm();
                         }
                     }

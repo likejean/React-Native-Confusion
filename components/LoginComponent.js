@@ -57,14 +57,14 @@ class LoginTab extends Component {
             <View style={styles.container}>
                 <Input
                     placeholder="Username"
-                    leftIcon={{ type: 'font-awesome', name: 'user-o' }}
+                    leftIcon={{ type: 'font-awesome', name: 'user-o', marginRight: 10 }}
                     onChangeText={(username) => this.setState({username})}
                     value={this.state.username}
                     containerStyle={styles.formInput}
                     />
                 <Input
                     placeholder="Password"
-                    leftIcon={{ type: 'font-awesome', name: 'key' }}
+                    leftIcon={{ type: 'font-awesome', name: 'key', marginRight: 10 }}
                     onChangeText={(password) => this.setState({password})}
                     value={this.state.password}
                     containerStyle={styles.formInput}
@@ -148,6 +148,22 @@ class RegisterTab extends Component {
         }
     }
 
+    getImageFromGallery = async () => {
+        const cameraPermission = await Permissions.askAsync(Permissions.CAMERA);
+        const cameraRollPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+        if (cameraPermission.status === 'granted' && cameraRollPermission.status === 'granted') {
+            let capturedImage = await ImagePicker.launchImageLibraryAsync({
+                allowsEditing: true,
+                aspect: [4, 3],
+            });
+            if (!capturedImage.cancelled) {
+                console.log(capturedImage);
+                this.processImage(capturedImage.uri);
+            }
+        }
+    }
+
     processImage = async (imageUri) => {
         let processedImage = await ImageManipulator.manipulateAsync(
             imageUri, 
@@ -193,38 +209,43 @@ class RegisterTab extends Component {
                             title="Camera"
                             onPress={this.getImageFromCamera}
                         />
+                        <Button
+                            title="Gallery"
+                            onPress={this.getImageFromGallery}
+                        />
                     </View>
                     <Input
+                        
                         placeholder="Username"
-                        leftIcon={{ type: 'font-awesome', name: 'user-o' }}
+                        leftIcon={{ type: 'font-awesome', name: 'user-o', marginRight: 10 }}
                         onChangeText={(username) => this.setState({username})}
                         value={this.state.username}
                         containerStyle={styles.formInput}
                     />
                     <Input
                         placeholder="Password"
-                        leftIcon={{ type: 'font-awesome', name: 'key' }}
+                        leftIcon={{ type: 'font-awesome', name: 'key', marginRight: 10 }}
                         onChangeText={(password) => this.setState({password})}
                         value={this.state.password}
                         containerStyle={styles.formInput}
                     />
                     <Input
                         placeholder="First Name"
-                        leftIcon={{ type: 'font-awesome', name: 'user-o' }}
+                        leftIcon={{ type: 'font-awesome', name: 'user-o', marginRight: 10 }}
                         onChangeText={(firstname) => this.setState({firstname})}
                         value={this.state.firstname}
                         containerStyle={styles.formInput}
                     />
                     <Input
                         placeholder="Last Name"
-                        leftIcon={{ type: 'font-awesome', name: 'user-o' }}
+                        leftIcon={{ type: 'font-awesome', name: 'user-o', marginRight: 10 }}
                         onChangeText={(lastname) => this.setState({lastname})}
                         value={this.state.lastname}
                         containerStyle={styles.formInput}
                     />
                     <Input
                         placeholder="Email"
-                        leftIcon={{ type: 'font-awesome', name: 'envelope-o' }}
+                        leftIcon={{ type: 'font-awesome', name: 'envelope-o', marginRight: 10 }}
                         onChangeText={(email) => this.setState({email})}
                         value={this.state.email}
                         containerStyle={styles.formInput}
@@ -266,7 +287,8 @@ const styles = StyleSheet.create({
     imageContainer: {
         flex: 1,
         flexDirection: 'row',
-        margin: 20
+        margin: 20,
+        justifyContent: 'space-around'
     },
     image: {
       margin: 10,

@@ -75,6 +75,9 @@ class Reservation extends Component {
                 color: '#512DA8'
             }
         }, {time: new Date().getTime() + 10000})
+        .catch( error => {
+            console.log('failure', error);
+        });
     }
 
     handleNotification() {

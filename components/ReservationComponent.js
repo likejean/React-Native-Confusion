@@ -26,8 +26,7 @@ class Reservation extends Component {
 
     handleReservation() {
         console.log(JSON.stringify(this.state));
-        this.addReservationToCalendar(this.state.date)
-        this.toggleModal();
+        this.addReservationToCalendar(this.state.date);        
     }
 
     resetForm() {
@@ -40,13 +39,14 @@ class Reservation extends Component {
     }
 
     async obtainNotificationPermission() {
-        let permission = await Permissions.getAsync(Permissions.USER_FACING_NOTIFICATIONS);
+        let permission = await Permissions.getAsync(Permissions.NOTIFICATIONS);
         if (permission.status !== 'granted') {
-            permission = await Permissions.askAsync(Permissions.USER_FACING_NOTIFICATIONS);
+            permission = await Permissions.askAsync(Permissions.NOTIFICATIONS);
             if (permission.status !== 'granted') {
                 Alert.alert('Permission not granted to show notifications');
             }
         }
+        Notifications.addListener(this.handleNotification);
         return permission;
     }
 
@@ -63,7 +63,7 @@ class Reservation extends Component {
 
     async presentLocalNotification(date) {
         await this.obtainNotificationPermission();
-        Notifications.presentLocalNotificationAsync({
+        Notifications.scheduleLocalNotificationAsync({
             title: 'Your Reservation',
             body: 'Reservation for '+ date + ' requested',
             ios: {
@@ -74,18 +74,27 @@ class Reservation extends Component {
                 vibrate: true,
                 color: '#512DA8'
             }
-        });
+        }, {time: new Date().getTime() + 10000})
+    }
+
+    handleNotification() {
+        console.log('Listener OK');
+    }
+
+    
+
+    handleNotification() {
+        console.log('Listener OK');
     }
 
     async addReservationToCalendar(date) {
-        console.log('DATE',date)
+        console.log('DATE',new Date(Date.parse(date)))
         await this.obtainCalendarPermission();
         Calendar.createEventAsync(Calendar.DEFAULT,
             {
                 title: 'Con Fusion Table Reservation',
                 startDate: new Date(Date.parse(date)),
-                endDate: new Date(Date.parse(date)+2*60*60*1000)
-                ,
+                endDate: new Date(Date.parse(date)+2*60*60*1000),
                 location: '121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong',
                 timeZone: 'Asia/Hong_Kong'
             }

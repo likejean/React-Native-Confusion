@@ -149,7 +149,7 @@ function RenderComments(props) {
                     emptyStarColor={'gold'}                  
                     rating={+item.rating}              
                 />                
-                <Text style={{fontSize: 12}}>{'-- ' + item.author + ', ' + item.date}</Text>
+                <Text style={{fontSize: 12}}>{'-- ' + item.author + ', ' + new Date(Date.parse(item.date))}</Text>
             </View>
         );
     }
